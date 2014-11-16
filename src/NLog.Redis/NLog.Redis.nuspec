@@ -6,12 +6,16 @@
     <title>NLog Target for Redis</title>
     <authors>Rich Clement</authors>
     <owners>Rich Clement</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/richclement/NLog.Redis/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/richclement/NLog.Redis</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
     <releaseNotes>Initial release.</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>NLog Redis</tags>
+	<dependencies>
+		<dependency id="StackExchange.Redis" version="1.0.371" />
+		<dependency id="NLog" version="3.1.0.0" />
+	</dependencies>
   </metadata>
 </package>
