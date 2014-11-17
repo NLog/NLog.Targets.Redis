@@ -30,7 +30,7 @@ The `<target />` configuration section contains five required fields and one opt
         <add assembly="NLog.Redis" />
       </extensions>
       <targets>
-        <target xsi:type="Redis" name="redis" host="127.0.0.1" port=3679 db=0 
+        <target xsi:type="Redis" name="redis" host="127.0.0.1" port="3679" db="0" 
                 key="logKey" dataType="list" 
                 layout="${date:format=yyyyMMddHHmmss} ${uppercase:${level}} ${message}" />
       </targets>
