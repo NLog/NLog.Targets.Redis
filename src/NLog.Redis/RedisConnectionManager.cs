@@ -3,19 +3,21 @@ using StackExchange.Redis;
 
 namespace NLog.Targets
 {
-    public class RedisConnectionManager : IDisposable
+    internal class RedisConnectionManager : IDisposable
     {
         private ConnectionMultiplexer _connectionMultiplexer;
 
         private readonly string _host;
         private readonly int _port;
         private readonly int _db;
+        private readonly string _password;
 
-        public RedisConnectionManager(string host, int port, int db)
+        public RedisConnectionManager(string host, int port, int db, string password)
         {
             _host = host;
             _port = port;
             _db = db;
+            _password = password;
 
             InitializeConnection();
         }
@@ -31,6 +33,11 @@ namespace NLog.Targets
                     KeepAlive = 5
                 };
             connectionOptions.EndPoints.Add(_host, _port);
+
+            if (!string.IsNullOrEmpty(_password))
+            {
+                connectionOptions.Password = _password;
+            }
 
             _connectionMultiplexer = ConnectionMultiplexer.Connect(connectionOptions);
         }

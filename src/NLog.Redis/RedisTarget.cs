@@ -37,26 +37,30 @@ namespace NLog.Targets
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
         /// </summary>
         public int Db { get; set; }
+        
+        /// <summary>
+        /// Sets the password to be used when accessing Redis with authentication required
+        /// </summary>
+        public string Password { get; set; }
 
-        protected RedisConnectionManager RedisConnectionManager;
+        private RedisConnectionManager _redisConnectionManager;
 
         public RedisTarget()
         {
-            Db = 0;
         }
 
         protected override void InitializeTarget()
         {
             base.InitializeTarget();
 
-            RedisConnectionManager = new RedisConnectionManager(Host, Port, Db);
+            _redisConnectionManager = new RedisConnectionManager(Host, Port, Db, Password);
         }
         
         protected override void CloseTarget()
         {
-            if (RedisConnectionManager != null)
+            if (_redisConnectionManager != null)
             {
-                RedisConnectionManager.Dispose();    
+                _redisConnectionManager.Dispose();    
             }
             
             base.CloseTarget();
@@ -65,7 +69,7 @@ namespace NLog.Targets
         protected override void Write(LogEventInfo logEvent)
         {
             var message = this.Layout.Render(logEvent);
-            var redisDatabase = RedisConnectionManager.GetDatabase();
+            var redisDatabase = _redisConnectionManager.GetDatabase();
             switch (DataType.ToLower())
             {
                 case ListDataType:
@@ -82,7 +86,7 @@ namespace NLog.Targets
         protected override void Write(Common.AsyncLogEventInfo logEvent)
         {
             var message = this.Layout.Render(logEvent.LogEvent);
-            var redisDatabase = RedisConnectionManager.GetDatabase();
+            var redisDatabase = _redisConnectionManager.GetDatabase();
             switch (DataType.ToLower())
             {
                 case ListDataType:

@@ -51,8 +51,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RedisTargetSecurityTests.cs" />
     <Compile Include="RedisTargetTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RedisTargetWithoutSecurityTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -14,71 +14,24 @@ namespace NLog.Redis.Tests
     /// <summary>
     /// These unit tests are marked ignore since they have a requirement of having a redis server running locally.
     /// </summary>
-    [TestFixture, Ignore]
     public class RedisTargetTests
     {
-        private const string RedisKey = "testkey";
-        private const string RedisHost = "localhost";
-        private const int RedisPort = 6379;
+        protected const string RedisKey = "testkey";
+        protected const string RedisHost = "localhost";
+        protected const int RedisPort = 6379;
+        protected const string RedisPassword = "testingpassword";
+        protected string Password = null;
 
-        
-        [Test]
-        public void Redis_Target_Should_Configure_With_List_DataType()
-        {
-            NLogRedisConfiguration("list");
-        }
-
-        [Test]
-        public void Redis_Target_Should_Configure_With_Channel_DataType()
-        {
-            NLogRedisConfiguration("channel");
-        }
-
-        [Test]
-        public void Redis_Target_Should_Put_Message_In_List_In_Redis()
-        {
-            NLogRedisConfiguration("list");
-
-            var logger = LogManager.GetLogger("redis");
-            logger.Info("test message");
-
-            using (var redisConnection = GetRedisConnection())
-            {
-                var listValue = redisConnection.GetDatabase().ListLeftPop(RedisKey);
-                Assert.IsFalse(!listValue.HasValue || listValue.IsNullOrEmpty);
-                Assert.AreEqual("INFO test message", listValue.ToString());
-            }
-        }
-
-        [Test]
-        public void Redis_Target_Should_Put_Message_In_Channel_In_Redis()
-        {
-            _actionRun = false;
-            NLogRedisConfiguration("channel");
-
-            using (var redisConnection = GetRedisConnection())
-            {
-                var subscriber = redisConnection.GetSubscriber();
-                subscriber.Subscribe(RedisKey, ListenForMessage);
-
-                var logger = LogManager.GetLogger("redis");
-                logger.Info("test pub/sub message");
-
-                Thread.Sleep(1000);
-                Assert.IsTrue(_actionRun);
-            }
-        }
-
-        private bool _actionRun = false;
+        protected bool ActionRun = false;
         public void ListenForMessage(RedisChannel channel, RedisValue value)
         {
             Assert.AreEqual(RedisKey, channel.ToString());
             Assert.IsFalse(!value.HasValue || value.IsNullOrEmpty);
             Assert.AreEqual("INFO test pub/sub message", value.ToString());
-            _actionRun = true;
+            ActionRun = true;
         }
 
-        public void NLogRedisConfiguration(string dataType)
+        public void NLogRedisConfiguration(string dataType, bool usePassword = false)
         {
             // create config
             var config = new LoggingConfiguration();
@@ -94,6 +47,7 @@ namespace NLog.Redis.Tests
             redisTarget.Key = RedisKey;
             redisTarget.Db = 0;
             redisTarget.DataType = dataType;
+            if (usePassword) redisTarget.Password = RedisPassword;
 
             // setup rules
             var rule1 = new LoggingRule("*", LogLevel.Info, redisTarget);
@@ -102,7 +56,7 @@ namespace NLog.Redis.Tests
             LogManager.Configuration = config;
         }
 
-        public ConnectionMultiplexer GetRedisConnection()
+        public ConnectionMultiplexer GetRedisConnection(bool usePassword = false)
         {
             var connectionOptions = new ConfigurationOptions
             {
@@ -112,10 +66,11 @@ namespace NLog.Redis.Tests
                 ConnectRetry = 3,
                 KeepAlive = 5
             };
+            if (usePassword) connectionOptions.Password = RedisPassword;
+
             connectionOptions.EndPoints.Add(RedisHost, RedisPort);
 
             return ConnectionMultiplexer.Connect(connectionOptions);
         }
-
     }
 }
