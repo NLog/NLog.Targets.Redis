@@ -10,7 +10,7 @@
     <projectUrl>https://github.com/richclement/NLog.Redis</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Initial release.</releaseNotes>
+    <releaseNotes>1.0.1 - Support for Redis passwords</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>NLog Redis</tags>
 	<dependencies>
