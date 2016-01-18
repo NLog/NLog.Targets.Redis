@@ -10,12 +10,12 @@
     <projectUrl>https://github.com/richclement/NLog.Redis</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>1.0.1 - Support for Redis passwords</releaseNotes>
+    <releaseNotes>1.0.2 - Update dependencies</releaseNotes>
     <copyright>Copyright 2014</copyright>
     <tags>NLog Redis</tags>
 	<dependencies>
-		<dependency id="StackExchange.Redis" version="1.0.371" />
-		<dependency id="NLog" version="3.1.0.0" />
+		<dependency id="StackExchange.Redis" version="1.0.488" />
+		<dependency id="NLog" version="4.2.3" />
 	</dependencies>
   </metadata>
 </package>
