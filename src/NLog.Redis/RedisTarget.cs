@@ -1,5 +1,6 @@
 ﻿using System;
 using NLog.Config;
+using NLog.Layouts;
 
 namespace NLog.Targets
 {
@@ -25,13 +26,28 @@ namespace NLog.Targets
         /// Sets the key to be used for either the list or the pub/sub channel in redis
         /// </summary>
         [RequiredParameter]
-        public string Key { get; set; }
+        public string Key
+        {
+            get
+            {
+                SimpleLayout simpleLayout = _key as SimpleLayout;
+                if (simpleLayout != null)
+                    return simpleLayout.Text;
+                else if (_key != null)
+                    return _key.ToString();
+                else
+                    return null;
+            }
+            set { _key = value; }
+        }
+        private Layout _key;
 
         /// <summary>
         /// Sets what redis data type to use, either "list" or "channel"
         /// </summary>
         [RequiredParameter]
         public string DataType { get; set; }
+        private string _dataTypeToLower;
 
         /// <summary>
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
@@ -52,7 +68,7 @@ namespace NLog.Targets
         protected override void InitializeTarget()
         {
             base.InitializeTarget();
-
+            _dataTypeToLower = DataType?.ToLower();
             _redisConnectionManager = new RedisConnectionManager(Host, Port, Db, Password);
         }
         
@@ -69,36 +85,19 @@ namespace NLog.Targets
         protected override void Write(LogEventInfo logEvent)
         {
             var message = this.Layout.Render(logEvent);
+            var key = _key?.Render(logEvent);
             var redisDatabase = _redisConnectionManager.GetDatabase();
-            switch (DataType.ToLower())
+            switch (_dataTypeToLower)
             {
                 case ListDataType:
-                    redisDatabase.ListRightPush(Key, message);
+                    redisDatabase.ListRightPush(key, message);
                     break;
                 case ChannelDataType:
-                    redisDatabase.Publish(Key, message);
+                    redisDatabase.Publish(key, message);
                     break;
                 default:
                     throw new Exception("no data type defined for redis");
             }
         }
-
-        protected override void Write(Common.AsyncLogEventInfo logEvent)
-        {
-            var message = this.Layout.Render(logEvent.LogEvent);
-            var redisDatabase = _redisConnectionManager.GetDatabase();
-            switch (DataType.ToLower())
-            {
-                case ListDataType:
-                    redisDatabase.ListRightPushAsync(Key, message);
-                    break;
-                case ChannelDataType:
-                    redisDatabase.PublishAsync(Key, message);
-                    break;
-                default:
-                    throw new Exception("no data type defined for redis");
-            }
-        }
-
     }
 }
