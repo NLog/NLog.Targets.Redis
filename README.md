@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/l059vtc7fdib76g4/branch/master?svg=true)](https://ci.appveyor.com/project/nlog/nlog-redis/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/ounar0m1gdidqram/branch/master?svg=true)](https://ci.appveyor.com/project/nlog/nlog-redis/branch/master)
 
 
 NLog.Redis
