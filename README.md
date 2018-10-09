@@ -1,4 +1,5 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/mkkmh5695wtpvmu0/branch/master?svg=true)](https://ci.appveyor.com/project/RichClement/nlog-redis/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/l059vtc7fdib76g4/branch/master?svg=true)](https://ci.appveyor.com/project/nlog/nlog-redis/branch/master)
+
 
 NLog.Redis
 ==========
@@ -25,17 +26,24 @@ The `<target />` configuration section contains five required fields and one opt
 
 ## Config File
 
-    <nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" throwExceptions="true">
-      <extensions>
-        <add assembly="NLog.Redis" />
-      </extensions>
-      <targets>
-        <target xsi:type="Redis" name="redis" host="127.0.0.1" port="3679" db="0" 
-                key="logKey" dataType="list" 
-                layout="${date:format=yyyyMMddHHmmss} ${uppercase:${level}} ${message}" />
-      </targets>
-      <rules>
-        <logger name="*" minlevel="Info" writeTo="redis" />
-      </rules>
-    </nlog>
+```xml
+<nlog xmlns="http://www.nlog-project.org/schemas/NLog.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" throwExceptions="true">
+  <extensions>
+    <add assembly="NLog.Redis" />
+  </extensions>
+  <targets>
+    <target xsi:type="Redis" name="redis" host="127.0.0.1" port="3679" db="0" 
+            key="logKey" dataType="list" 
+            layout="${date:format=yyyyMMddHHmmss} ${uppercase:${level}} ${message}" />
+  </targets>
+  <rules>
+    <logger name="*" minlevel="Info" writeTo="redis" />
+  </rules>
+</nlog>
+```
  
+
+
+## Notes
+
+This is a fork of https://github.com/richclement/NLog.Redis
