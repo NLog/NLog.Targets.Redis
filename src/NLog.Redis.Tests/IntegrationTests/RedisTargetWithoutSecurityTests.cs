@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Threading;
 using NUnit.Framework;
 
-namespace NLog.Redis.Tests
+namespace NLog.Redis.Tests.IntegrationTests
 {
     [TestFixture]
     [Ignore("Ignore")]
-    public class RedisTargetWithoutSecurityTests : RedisTargetTests
+    public class RedisTargetWithoutSecurityTests : RedisTargetTestsBase
     {
         [Test]
         public void Redis_Target_Should_Configure_With_List_DataType()
