@@ -11,8 +11,7 @@ namespace NLog.Redis.Tests.IntegrationTests
     public abstract class RedisTargetTestsBase
     {
         protected const string RedisKey = "testkey";
-        protected const string RedisHost = "localhost";
-        protected const int RedisPort = 6379;
+        protected const string RedisHosts = "localhost:6379";
         protected const string RedisPassword = "testingpassword";
         protected string Password = null;
 
@@ -36,8 +35,7 @@ namespace NLog.Redis.Tests.IntegrationTests
 
             // set target properties
             redisTarget.Layout = "${uppercase:${level}} ${message}";
-            redisTarget.Host = RedisHost;
-            redisTarget.Port = RedisPort;
+            redisTarget.Hosts = RedisHosts;
             redisTarget.Key = RedisKey;
             redisTarget.Db = 0;
             redisTarget.DataType = dataType;
@@ -62,7 +60,8 @@ namespace NLog.Redis.Tests.IntegrationTests
             };
             if (usePassword) connectionOptions.Password = RedisPassword;
 
-            connectionOptions.EndPoints.Add(RedisHost, RedisPort);
+            foreach(var host in RedisHosts.Split(','))
+                connectionOptions.EndPoints.Add(host);
 
             return ConnectionMultiplexer.Connect(connectionOptions);
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using NLog.Config;
+using System.Linq;
 using NLog.Layouts;
 
 namespace NLog.Targets
@@ -13,15 +14,20 @@ namespace NLog.Targets
         /// <summary>
         /// Sets the host name or IP Address of the redis server
         /// </summary>
-        [RequiredParameter]
+        [Obsolete("Use hosts instead")]
         public string Host { get; set; }
 
         /// <summary>
         /// Sets the port number redis is running on
         /// </summary>
-        [RequiredParameter]
+        [Obsolete("Use hosts instead")]
         public int Port { get; set; }
 
+        /// <summary>
+        /// Sets the hosts names or IP Addresses and ports of the redis servers
+        /// </summary>
+        public string Hosts { get; set; }
+        
         /// <summary>
         /// Sets the key to be used for either the list or the pub/sub channel in redis
         /// </summary>
@@ -69,7 +75,12 @@ namespace NLog.Targets
         {
             base.InitializeTarget();
             _dataTypeToLower = DataType?.ToLower();
-            _redisConnectionManager = new RedisConnectionManager(Host, Port, Db, Password);
+            if (!string.IsNullOrWhiteSpace(Host))
+                _redisConnectionManager = new RedisConnectionManager(Host, Port, Db, Password);
+            else if (!string.IsNullOrWhiteSpace(Hosts))
+                _redisConnectionManager = new RedisConnectionManager(Hosts.Split(',').ToList(), Db, Password);
+            else
+                throw new ArgumentException("At least a host must be set");
         }
         
         protected override void CloseTarget()
@@ -99,5 +110,5 @@ namespace NLog.Targets
                     throw new Exception("no data type defined for redis");
             }
         }
-    }
-}
+            }
+        }
