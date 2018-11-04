@@ -1,37 +1,23 @@
 ﻿using System.Threading;
-using NUnit.Framework;
+using Xunit;
 
 namespace NLog.Redis.Tests.IntegrationTests
 {
-    [TestFixture]
-    [Ignore("Ignore")]
     public class RedisTargetSecurityTests : RedisTargetTestsBase
     {
-        [SetUp]
-        public void Setup()
-        {
-            Password = RedisPassword;
-        }
-
-        [TearDown]
-        public void Teardown()
-        {
-            LogManager.Configuration = null;
-        }
-
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_List_DataType()
         {
             NLogRedisConfiguration("list", true);
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_Channel_DataType()
         {
             NLogRedisConfiguration("channel", true);
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_List_In_Redis()
         {
             NLogRedisConfiguration("list", true);
@@ -42,12 +28,12 @@ namespace NLog.Redis.Tests.IntegrationTests
             using (var redisConnection = GetRedisConnection(true))
             {
                 var listValue = redisConnection.GetDatabase().ListLeftPop(RedisKey);
-                Assert.IsFalse(!listValue.HasValue || listValue.IsNullOrEmpty);
-                Assert.AreEqual("INFO test message", listValue.ToString());
+                Assert.False(!listValue.HasValue || listValue.IsNullOrEmpty);
+                Assert.Equal("INFO test message", listValue.ToString());
             }
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_Channel_In_Redis()
         {
             ActionRun = false;
@@ -62,14 +48,13 @@ namespace NLog.Redis.Tests.IntegrationTests
                 logger.Info("test pub/sub message");
 
                 Thread.Sleep(1000);
-                Assert.IsTrue(ActionRun);
+                Assert.True(ActionRun);
             }
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Fail_To_Configure_WithList_DataType_Without_Password()
         {
-            Password = null;
             NLogRedisConfiguration("list", false);
 
             var logger = LogManager.GetLogger("redis");
@@ -78,11 +63,11 @@ namespace NLog.Redis.Tests.IntegrationTests
             using (var redisConnection = GetRedisConnection(true))
             {
                 var listValue = redisConnection.GetDatabase().ListLeftPop(RedisKey);
-                Assert.IsFalse(listValue.HasValue);
+                Assert.False(listValue.HasValue);
             }
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Fail_To_Configure_WithChannel_DataType_Without_Password()
         {
             ActionRun = false;
@@ -97,7 +82,7 @@ namespace NLog.Redis.Tests.IntegrationTests
                 logger.Info("test pub/sub message");
 
                 Thread.Sleep(1000);
-                Assert.IsFalse(ActionRun);
+                Assert.False(ActionRun);
             }
         }
     }

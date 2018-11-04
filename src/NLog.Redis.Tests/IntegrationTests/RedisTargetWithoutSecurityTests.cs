@@ -1,25 +1,23 @@
 ﻿using System.Threading;
-using NUnit.Framework;
+using Xunit;
 
 namespace NLog.Redis.Tests.IntegrationTests
 {
-    [TestFixture]
-    [Ignore("Ignore")]
     public class RedisTargetWithoutSecurityTests : RedisTargetTestsBase
     {
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_List_DataType()
         {
             NLogRedisConfiguration("list");
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_Channel_DataType()
         {
             NLogRedisConfiguration("channel");
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_List_In_Redis()
         {
             NLogRedisConfiguration("list");
@@ -30,12 +28,12 @@ namespace NLog.Redis.Tests.IntegrationTests
             using (var redisConnection = GetRedisConnection())
             {
                 var listValue = redisConnection.GetDatabase().ListLeftPop(RedisKey);
-                Assert.IsFalse(!listValue.HasValue || listValue.IsNullOrEmpty);
-                Assert.AreEqual("INFO test message", listValue.ToString());
+                Assert.False(!listValue.HasValue || listValue.IsNullOrEmpty);
+                Assert.Equal("INFO test message", listValue.ToString());
             }
         }
 
-        [Test]
+        [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_Channel_In_Redis()
         {
             ActionRun = false;
@@ -50,7 +48,7 @@ namespace NLog.Redis.Tests.IntegrationTests
                 logger.Info("test pub/sub message");
 
                 Thread.Sleep(1000);
-                Assert.IsTrue(ActionRun);
+                Assert.True(ActionRun);
             }
         }
     }
