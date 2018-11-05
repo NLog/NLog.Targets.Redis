@@ -55,7 +55,7 @@ namespace NLog.Redis.Tests.IntegrationTests
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Fail_To_Configure_WithList_DataType_Without_Password()
         {
-            NLogRedisConfiguration("list", false);
+            NLogRedisConfiguration("list");
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -71,7 +71,7 @@ namespace NLog.Redis.Tests.IntegrationTests
         public void Redis_Target_Should_Fail_To_Configure_WithChannel_DataType_Without_Password()
         {
             ActionRun = false;
-            NLogRedisConfiguration("channel", false);
+            NLogRedisConfiguration("channel");
 
             using (var redisConnection = GetRedisConnection(true))
             {

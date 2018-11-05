@@ -5,7 +5,7 @@ namespace NLog.Targets
 {
     internal class RedisConnectionManager : IDisposable
     {
-        private ConnectionMultiplexer _connectionMultiplexer;
+        private IConnectionMultiplexer _connectionMultiplexer;
 
         private readonly string _host;
         private readonly int _port;
@@ -18,20 +18,18 @@ namespace NLog.Targets
             _port = port;
             _db = db;
             _password = password;
-
-            InitializeConnection();
         }
 
-        private void InitializeConnection()
+        public void InitializeConnection()
         {
             var connectionOptions = new ConfigurationOptions
-                {
-                    AbortOnConnectFail =  false,
-                    SyncTimeout = 3000,
-                    ConnectTimeout = 3000,
-                    ConnectRetry = 3,
-                    KeepAlive = 5
-                };
+            {
+                AbortOnConnectFail = false,
+                SyncTimeout = 3000,
+                ConnectTimeout = 3000,
+                ConnectRetry = 3,
+                KeepAlive = 5
+            };
             connectionOptions.EndPoints.Add(_host, _port);
 
             if (!string.IsNullOrEmpty(_password))
@@ -39,7 +37,12 @@ namespace NLog.Targets
                 connectionOptions.Password = _password;
             }
 
-            _connectionMultiplexer = ConnectionMultiplexer.Connect(connectionOptions);
+            _connectionMultiplexer = CreateConnectionMultiplexer(connectionOptions);
+        }
+
+        protected virtual IConnectionMultiplexer CreateConnectionMultiplexer(ConfigurationOptions connectionOptions)
+        {
+            return ConnectionMultiplexer.Connect(connectionOptions);
         }
 
         public IDatabase GetDatabase()

@@ -40,6 +40,7 @@ namespace NLog.Targets
             }
             set { _key = value; }
         }
+
         private Layout _key;
 
         /// <summary>
@@ -47,13 +48,14 @@ namespace NLog.Targets
         /// </summary>
         [RequiredParameter]
         public string DataType { get; set; }
+
         private string _dataTypeToLower;
 
         /// <summary>
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
         /// </summary>
         public int Db { get; set; }
-        
+
         /// <summary>
         /// Sets the password to be used when accessing Redis with authentication required
         /// </summary>
@@ -61,24 +63,27 @@ namespace NLog.Targets
 
         private RedisConnectionManager _redisConnectionManager;
 
-        public RedisTarget()
+        internal virtual RedisConnectionManager CreateConnectionManager()
         {
+            return new RedisConnectionManager(Host, Port, Db, Password);
         }
 
         protected override void InitializeTarget()
         {
-            base.InitializeTarget();
             _dataTypeToLower = DataType?.ToLower();
-            _redisConnectionManager = new RedisConnectionManager(Host, Port, Db, Password);
+            _redisConnectionManager = CreateConnectionManager();
+            _redisConnectionManager.InitializeConnection();
+
+            base.InitializeTarget();
         }
-        
+
         protected override void CloseTarget()
         {
             if (_redisConnectionManager != null)
             {
-                _redisConnectionManager.Dispose();    
+                _redisConnectionManager.Dispose();
             }
-            
+
             base.CloseTarget();
         }
 
