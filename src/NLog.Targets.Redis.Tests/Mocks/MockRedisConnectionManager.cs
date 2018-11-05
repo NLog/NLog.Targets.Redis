@@ -1,7 +1,6 @@
-﻿using NLog.Targets;
-using StackExchange.Redis;
+﻿using StackExchange.Redis;
 
-namespace NLog.Redis.Tests.Mocks
+namespace NLog.Targets.Redis.Tests.Mocks
 {
     internal class MockRedisConnectionManager : RedisConnectionManager
     {

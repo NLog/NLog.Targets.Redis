@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Xunit;
 
-namespace NLog.Redis.Tests.IntegrationTests
+namespace NLog.Targets.Redis.Tests.IntegrationTests
 {
     public class RedisTargetSecurityTests : RedisTargetTestsBase
     {
