@@ -1,7 +1,7 @@
 ﻿using NLog.Config;
 using NLog.Targets;
-using NUnit.Framework;
 using StackExchange.Redis;
+using Xunit;
 
 namespace NLog.Redis.Tests.IntegrationTests
 {
@@ -14,14 +14,13 @@ namespace NLog.Redis.Tests.IntegrationTests
         protected const string RedisHost = "localhost";
         protected const int RedisPort = 6379;
         protected const string RedisPassword = "testingpassword";
-        protected string Password = null;
 
         protected bool ActionRun;
         public void ListenForMessage(RedisChannel channel, RedisValue value)
         {
-            Assert.AreEqual(RedisKey, channel.ToString());
-            Assert.IsFalse(!value.HasValue || value.IsNullOrEmpty);
-            Assert.AreEqual("INFO test pub/sub message", value.ToString());
+            Assert.Equal(RedisKey, channel.ToString());
+            Assert.False(!value.HasValue || value.IsNullOrEmpty);
+            Assert.Equal("INFO test pub/sub message", value.ToString());
             ActionRun = true;
         }
 
