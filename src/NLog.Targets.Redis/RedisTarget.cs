@@ -44,9 +44,8 @@ namespace NLog.Targets.Redis
         private Layout _key;
 
         /// <summary>
-        /// Sets what redis data type to use, either "list" or "channel"
+        /// Sets what redis data type to use, either "list" or "channel", defaults to "list"
         /// </summary>
-        [RequiredParameter]
         public string DataType { get; set; }
 
         private string _dataTypeToLower;
@@ -70,7 +69,12 @@ namespace NLog.Targets.Redis
 
         protected override void InitializeTarget()
         {
-            _dataTypeToLower = DataType?.ToLower();
+            //Default to list type for backwards compatibility
+            if (string.IsNullOrEmpty(DataType))
+            {
+                DataType = ListDataType;
+            }
+            _dataTypeToLower = DataType.ToLower();
             _redisConnectionManager = CreateConnectionManager();
             _redisConnectionManager.InitializeConnection();
 
@@ -89,7 +93,7 @@ namespace NLog.Targets.Redis
 
         protected override void Write(LogEventInfo logEvent)
         {
-            var message = this.Layout.Render(logEvent);
+            var message = Layout.Render(logEvent);
             var key = _key?.Render(logEvent);
             var redisDatabase = _redisConnectionManager.GetDatabase();
             switch (_dataTypeToLower)
