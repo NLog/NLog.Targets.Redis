@@ -1,7 +1,7 @@
 ﻿using NLog.Targets;
 using StackExchange.Redis;
 
-namespace NLog.Redis.Tests
+namespace NLog.Redis.Tests.Mocks
 {
     internal class MockRedisTarget : RedisTarget
     {

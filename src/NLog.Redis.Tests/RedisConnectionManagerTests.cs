@@ -1,4 +1,5 @@
 ﻿using System;
+using NLog.Redis.Tests.Mocks;
 using NSubstitute;
 using StackExchange.Redis;
 using Xunit;
