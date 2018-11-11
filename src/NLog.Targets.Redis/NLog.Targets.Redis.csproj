@@ -27,12 +27,12 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <PackageReference Include="NLog" Version="4.0.0" />
-    <PackageReference Include="StackExchange.Redis" Version="1.0.488" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.0.488" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
     <PackageReference Include="NLog" Version="4.5.0" />
-    <PackageReference Include="StackExchange.Redis" Version="1.1.605" />
+    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.1.605" />
   </ItemGroup>
 
 </Project>
