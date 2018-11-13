@@ -79,7 +79,7 @@ namespace NLog.Targets.Redis.Tests
             var database = Substitute.For<IDatabase>();
             multiplex.GetDatabase(Arg.Any<int>()).Returns(database);
 
-            NLogRedisConfiguration(new MockRedisTarget(multiplex), null);
+            NLogRedisConfiguration(new MockRedisTarget(multiplex));
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -87,22 +87,7 @@ namespace NLog.Targets.Redis.Tests
             database.Received().ListRightPush(RedisKey, "INFO test message");
         }
 
-        [Fact]
-        public void RedisTarget_should_default_to_list_if_empty_DataType()
-        {
-            var multiplex = Substitute.For<IConnectionMultiplexer>();
-            var database = Substitute.For<IDatabase>();
-            multiplex.GetDatabase(Arg.Any<int>()).Returns(database);
-
-            NLogRedisConfiguration(new MockRedisTarget(multiplex), "");
-
-            var logger = LogManager.GetLogger("redis");
-            logger.Info("test message");
-
-            database.Received().ListRightPush(RedisKey, "INFO test message");
-        }
-
-        private void NLogRedisConfiguration(RedisTarget redisTarget, string dataType)
+        private void NLogRedisConfiguration(RedisTarget redisTarget, string dataType = null)
         {
             // create config
             var config = new LoggingConfiguration();
@@ -116,7 +101,10 @@ namespace NLog.Targets.Redis.Tests
             redisTarget.Port = RedisPort;
             redisTarget.Key = RedisKey;
             redisTarget.Db = 0;
-            redisTarget.DataType = dataType;
+            if (dataType != null)
+            {
+                redisTarget.DataType = dataType;
+            }
 
             // setup rules
             var rule1 = new LoggingRule("*", LogLevel.Info, redisTarget);
