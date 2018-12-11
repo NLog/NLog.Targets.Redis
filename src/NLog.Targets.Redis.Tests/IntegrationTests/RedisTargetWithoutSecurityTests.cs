@@ -8,19 +8,19 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_List_DataType()
         {
-            NLogRedisConfiguration("list");
+            NLogRedisConfiguration(RedisDataType.List);
         }
 
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_Channel_DataType()
         {
-            NLogRedisConfiguration("channel");
+            NLogRedisConfiguration(RedisDataType.Channel);
         }
 
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_List_In_Redis()
         {
-            NLogRedisConfiguration("list");
+            NLogRedisConfiguration(RedisDataType.List);
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -37,7 +37,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         public void Redis_Target_Should_Put_Message_In_Channel_In_Redis()
         {
             ActionRun = false;
-            NLogRedisConfiguration("channel");
+            NLogRedisConfiguration(RedisDataType.Channel);
 
             using (var redisConnection = GetRedisConnection())
             {

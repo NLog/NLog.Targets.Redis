@@ -8,19 +8,19 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_List_DataType()
         {
-            NLogRedisConfiguration("list", true);
+            NLogRedisConfiguration(RedisDataType.List, true);
         }
 
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Configure_With_Channel_DataType()
         {
-            NLogRedisConfiguration("channel", true);
+            NLogRedisConfiguration(RedisDataType.Channel, true);
         }
 
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Put_Message_In_List_In_Redis()
         {
-            NLogRedisConfiguration("list", true);
+            NLogRedisConfiguration(RedisDataType.List, true);
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -37,7 +37,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         public void Redis_Target_Should_Put_Message_In_Channel_In_Redis()
         {
             ActionRun = false;
-            NLogRedisConfiguration("channel", true);
+            NLogRedisConfiguration(RedisDataType.Channel, true);
 
             using (var redisConnection = GetRedisConnection(true))
             {
@@ -55,7 +55,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         [Fact(Skip = "Integration Test")]
         public void Redis_Target_Should_Fail_To_Configure_WithList_DataType_Without_Password()
         {
-            NLogRedisConfiguration("list");
+            NLogRedisConfiguration(RedisDataType.List);
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -71,7 +71,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
         public void Redis_Target_Should_Fail_To_Configure_WithChannel_DataType_Without_Password()
         {
             ActionRun = false;
-            NLogRedisConfiguration("channel");
+            NLogRedisConfiguration(RedisDataType.Channel);
 
             using (var redisConnection = GetRedisConnection(true))
             {
