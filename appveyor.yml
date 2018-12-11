@@ -1,11 +1,11 @@
-version: 1.0.{build}
+version: 2.0.{build}
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
 build_script:
-- ps: dotnet pack src\NLog.Redis --configuration Release --include-symbols
+- ps: dotnet pack src\NLog.Targets.Redis --configuration Release --include-symbols
 test_script:
-- ps: dotnet test .\src\NLog.Redis.Tests\
+- ps: dotnet test .\src\NLog.Targets.Redis.Tests\
 
 nuget:
   disable_publish_on_pr: true

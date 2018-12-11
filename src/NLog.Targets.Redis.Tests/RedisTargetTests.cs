@@ -1,11 +1,10 @@
 ﻿using NLog.Config;
-using NLog.Redis.Tests.Mocks;
-using NLog.Targets;
+using NLog.Targets.Redis.Tests.Mocks;
 using NSubstitute;
 using StackExchange.Redis;
 using Xunit;
 
-namespace NLog.Redis.Tests
+namespace NLog.Targets.Redis.Tests
 {
     public class RedisTargetTests
     {
@@ -73,14 +72,14 @@ namespace NLog.Redis.Tests
             database.Received().ListRightPush(RedisKey, "INFO test message");
         }
 
-        [Fact(Skip = "Renable when backwards compatibility is added for NLog.Targets.Redis")]
+        [Fact]
         public void RedisTarget_should_default_to_list_if_no_DataType()
         {
             var multiplex = Substitute.For<IConnectionMultiplexer>();
             var database = Substitute.For<IDatabase>();
             multiplex.GetDatabase(Arg.Any<int>()).Returns(database);
 
-            NLogRedisConfiguration(new MockRedisTarget(multiplex), null);
+            NLogRedisConfiguration(new MockRedisTarget(multiplex));
 
             var logger = LogManager.GetLogger("redis");
             logger.Info("test message");
@@ -88,7 +87,7 @@ namespace NLog.Redis.Tests
             database.Received().ListRightPush(RedisKey, "INFO test message");
         }
 
-        private void NLogRedisConfiguration(RedisTarget redisTarget, string dataType)
+        private void NLogRedisConfiguration(RedisTarget redisTarget, string dataType = null)
         {
             // create config
             var config = new LoggingConfiguration();
@@ -102,7 +101,10 @@ namespace NLog.Redis.Tests
             redisTarget.Port = RedisPort;
             redisTarget.Key = RedisKey;
             redisTarget.Db = 0;
-            redisTarget.DataType = dataType;
+            if (dataType != null)
+            {
+                redisTarget.DataType = dataType;
+            }
 
             // setup rules
             var rule1 = new LoggingRule("*", LogLevel.Info, redisTarget);

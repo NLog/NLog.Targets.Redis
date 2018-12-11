@@ -1,9 +1,8 @@
 ﻿using NLog.Config;
-using NLog.Targets;
 using StackExchange.Redis;
 using Xunit;
 
-namespace NLog.Redis.Tests.IntegrationTests
+namespace NLog.Targets.Redis.Tests.IntegrationTests
 {
     /// <summary>
     /// These unit tests are marked ignore since they have a requirement of having a redis server running locally.

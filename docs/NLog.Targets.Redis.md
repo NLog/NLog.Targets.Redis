@@ -1,4 +1,4 @@
-# NLog.Targets.Redis API
+# Original NLog.Targets.Redis API
 
 ```cs
 [Target("Redis")]

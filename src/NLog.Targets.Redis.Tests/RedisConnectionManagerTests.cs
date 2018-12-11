@@ -1,10 +1,10 @@
 ﻿using System;
-using NLog.Redis.Tests.Mocks;
+using NLog.Targets.Redis.Tests.Mocks;
 using NSubstitute;
 using StackExchange.Redis;
 using Xunit;
 
-namespace NLog.Redis.Tests
+namespace NLog.Targets.Redis.Tests
 {
     public class RedisConnectionManagerTests
     {

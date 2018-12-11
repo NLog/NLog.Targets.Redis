@@ -1,0 +1,31 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net45;netstandard1.5</TargetFrameworks>
+    <Title>NLog Target for Redis</Title>
+    <Description>NLog Target for Redis supporting .Net Framework and .Net Standard</Description>
+    <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
+    <Copyright>Copyright 2014-$(CurrentYear)</Copyright>
+    <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
+
+    <Version>2.0.0</Version>
+    <PackageReleaseNotes>NLog.Redis is now NLog.Targets.Redis</PackageReleaseNotes>
+    <PackageTags>NLog;Redis;Log;Logging</PackageTags>
+    <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/NLog/NLog.Redis/master/LICENSE</PackageLicenseUrl>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>git@github.com:NLog/NLog.Redis.git</RepositoryUrl>
+    
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
+    <PackageReference Include="NLog" Version="4.0.0" />
+    <PackageReference Include="StackExchange.Redis" Version="1.0.488" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
+    <PackageReference Include="NLog" Version="4.5.0" />
+    <PackageReference Include="StackExchange.Redis" Version="1.1.605" />
+  </ItemGroup>
+
+</Project>
