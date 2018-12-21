@@ -8,9 +8,6 @@ namespace NLog.Targets.Redis
     [Target("Redis")]
     public class RedisTarget : TargetWithLayout
     {
-        protected const string ListDataType = "list";
-        protected const string ChannelDataType = "channel";
-
         /// <summary>
         /// Sets the host name or IP Address of the redis server
         /// </summary>
@@ -47,10 +44,8 @@ namespace NLog.Targets.Redis
         /// <summary>
         /// Sets what redis data type to use, either "list" or "channel", defaults to "list"
         /// </summary>
-        [DefaultValue(ListDataType)]
-        public string DataType { get; set; } = ListDataType;
-
-        private string _dataTypeToLower;
+        [DefaultValue(RedisDataType.List)]
+        public RedisDataType DataType { get; set; } = RedisDataType.List;
 
         /// <summary>
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
@@ -71,7 +66,6 @@ namespace NLog.Targets.Redis
 
         protected override void InitializeTarget()
         {
-            _dataTypeToLower = DataType.ToLower();
             _redisConnectionManager = CreateConnectionManager();
             _redisConnectionManager.InitializeConnection();
 
@@ -93,12 +87,12 @@ namespace NLog.Targets.Redis
             var message = Layout.Render(logEvent);
             var key = _key?.Render(logEvent);
             var redisDatabase = _redisConnectionManager.GetDatabase();
-            switch (_dataTypeToLower)
+            switch (DataType)
             {
-                case ListDataType:
+                case RedisDataType.List:
                     redisDatabase.ListRightPush(key, message);
                     break;
-                case ChannelDataType:
+                case RedisDataType.Channel:
                     redisDatabase.Publish(key, message);
                     break;
                 default:

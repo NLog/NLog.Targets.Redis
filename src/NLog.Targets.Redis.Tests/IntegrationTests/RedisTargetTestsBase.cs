@@ -23,7 +23,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
             ActionRun = true;
         }
 
-        public void NLogRedisConfiguration(string dataType, bool usePassword = false)
+        public void NLogRedisConfiguration(RedisDataType dataType, bool usePassword = false)
         {
             // create config
             var config = new LoggingConfiguration();
