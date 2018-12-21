@@ -10,7 +10,7 @@ namespace NLog.Targets.Redis.Tests
     {
         protected const string RedisKey = "testkey";
         protected const string RedisHost = "localhost";
-        protected const int RedisPort = 6379;
+        protected const string RedisPort = "6379";
 
 
         [Fact]
@@ -93,7 +93,7 @@ namespace NLog.Targets.Redis.Tests
             redisTarget.Host = RedisHost;
             redisTarget.Port = RedisPort;
             redisTarget.Key = RedisKey;
-            redisTarget.Db = 0;
+            redisTarget.Db = "0";
             if (dataType != null)
             {
                 redisTarget.DataType = dataType.Value;

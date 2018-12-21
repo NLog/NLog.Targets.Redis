@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using NLog.Common;
 using NLog.Config;
 using NLog.Layouts;
 
@@ -12,34 +13,19 @@ namespace NLog.Targets.Redis
         /// Sets the host name or IP Address of the redis server
         /// </summary>
         [RequiredParameter]
-        public string Host { get; set; }
+        public Layout Host { get; set; }
 
         /// <summary>
         /// Sets the port number redis is running on
         /// </summary>
         [RequiredParameter]
-        public int Port { get; set; }
+        public Layout Port { get; set; }
 
         /// <summary>
         /// Sets the key to be used for either the list or the pub/sub channel in redis
         /// </summary>
         [RequiredParameter]
-        public string Key
-        {
-            get
-            {
-                SimpleLayout simpleLayout = _key as SimpleLayout;
-                if (simpleLayout != null)
-                    return simpleLayout.Text;
-                else if (_key != null)
-                    return _key.ToString();
-                else
-                    return null;
-            }
-            set { _key = value; }
-        }
-
-        private Layout _key;
+        public Layout Key { get; set; }
 
         /// <summary>
         /// Sets what redis data type to use, either "list" or "channel", defaults to "list"
@@ -50,23 +36,41 @@ namespace NLog.Targets.Redis
         /// <summary>
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
         /// </summary>
-        public int Db { get; set; }
+        public Layout Db { get; set; }
 
         /// <summary>
         /// Sets the password to be used when accessing Redis with authentication required
         /// </summary>
-        public string Password { get; set; }
+        public Layout Password { get; set; }
 
         private RedisConnectionManager _redisConnectionManager;
 
-        internal virtual RedisConnectionManager CreateConnectionManager()
+        internal virtual RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password)
         {
-            return new RedisConnectionManager(Host, Port, Db, Password);
+            return new RedisConnectionManager(host, port, db, password);
         }
 
         protected override void InitializeTarget()
         {
-            _redisConnectionManager = CreateConnectionManager();
+            var host = Host?.Render(LogEventInfo.CreateNullEvent());
+            var password = Password?.Render(LogEventInfo.CreateNullEvent());
+
+            var renderedPort = Port.Render(LogEventInfo.CreateNullEvent());
+            if (!int.TryParse(renderedPort, out var port))
+            {
+                throw new Exception($"Unable to parse Port:{renderedPort}");
+            }
+            var db = 0;
+            if (Db != null)
+            {
+                var renderedDb = Db.Render(LogEventInfo.CreateNullEvent());
+                if (!int.TryParse(renderedDb, out db))
+                {
+                    InternalLogger.Warn("RedisTarget: Unable to parse Db:{0}", renderedDb);
+                }
+            }
+
+            _redisConnectionManager = CreateConnectionManager(host, port, db, password);
             _redisConnectionManager.InitializeConnection();
 
             base.InitializeTarget();
@@ -74,10 +78,7 @@ namespace NLog.Targets.Redis
 
         protected override void CloseTarget()
         {
-            if (_redisConnectionManager != null)
-            {
-                _redisConnectionManager.Dispose();
-            }
+            _redisConnectionManager?.Dispose();
 
             base.CloseTarget();
         }
@@ -85,7 +86,7 @@ namespace NLog.Targets.Redis
         protected override void Write(LogEventInfo logEvent)
         {
             var message = Layout.Render(logEvent);
-            var key = _key?.Render(logEvent);
+            var key = Key?.Render(logEvent);
             var redisDatabase = _redisConnectionManager.GetDatabase();
             switch (DataType)
             {
@@ -96,7 +97,7 @@ namespace NLog.Targets.Redis
                     redisDatabase.Publish(key, message);
                     break;
                 default:
-                    throw new Exception("no data type defined for redis");
+                    throw new Exception("No DataType defined for RedisTarget");
             }
         }
     }

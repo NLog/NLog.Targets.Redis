@@ -11,7 +11,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
     {
         protected const string RedisKey = "testkey";
         protected const string RedisHost = "localhost";
-        protected const int RedisPort = 6379;
+        protected const string RedisPort = "6379";
         protected const string RedisPassword = "testingpassword";
 
         protected bool ActionRun;
@@ -37,7 +37,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
             redisTarget.Host = RedisHost;
             redisTarget.Port = RedisPort;
             redisTarget.Key = RedisKey;
-            redisTarget.Db = 0;
+            redisTarget.Db = "0";
             redisTarget.DataType = dataType;
             if (usePassword) redisTarget.Password = RedisPassword;
 
@@ -59,8 +59,8 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
                 KeepAlive = 5
             };
             if (usePassword) connectionOptions.Password = RedisPassword;
-
-            connectionOptions.EndPoints.Add(RedisHost, RedisPort);
+            var port = int.Parse(RedisPort);
+            connectionOptions.EndPoints.Add(RedisHost, port);
 
             return ConnectionMultiplexer.Connect(connectionOptions);
         }
