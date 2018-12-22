@@ -1,7 +1,23 @@
-version: 2.0.{build}
+version: 0.0.{build}-ci
 image: Visual Studio 2017
 configuration: Release
 platform: Any CPU
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  package_version: '{version}'
+  file_version: '{version}'
+  informational_version: '{version}'
+  # AssemblyVersion should not be touch by the patcher.
+  # Per https://github.com/NLog/NLog/issues/1765#issuecomment-261776513
+init:
+- pwsh: >-
+    $tagRelease = $env:appveyor_repo_tag -eq 'true'
+
+    if ($tagRelease) {
+        $tag = $env:appveyor_repo_tag_name
+        Update-AppveyorBuild -Version "$tag"
+    }
 build_script:
 - ps: dotnet pack src\NLog.Targets.Redis --configuration Release --include-symbols
 test_script:
@@ -9,8 +25,6 @@ test_script:
 
 nuget:
   disable_publish_on_pr: true
-
-skip_tags: true
 
 artifacts:
   - path: 'src\**\*.nupkg'
@@ -21,4 +35,4 @@ deploy:
     secure: DtVDH1ZfIR8E2oDLeSPxfn0WFXw3MCv4WhLkkQQl9LfEHswb5sdxdCYodNKhrKik
   artifact: /.*\.nupkg/
   on:
-    branch: master
+    APPVEYOR_REPO_TAG: true
