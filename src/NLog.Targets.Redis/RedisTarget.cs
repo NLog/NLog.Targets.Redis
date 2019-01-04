@@ -66,7 +66,7 @@ namespace NLog.Targets.Redis
                 var renderedDb = Db.Render(LogEventInfo.CreateNullEvent());
                 if (!int.TryParse(renderedDb, out db))
                 {
-                    InternalLogger.Warn("RedisTarget: Unable to parse Db:{0}", renderedDb);
+                    InternalLogger.Warn($"{nameof(RedisTarget)}: Unable to parse db as a number: {renderedDb} falling back to the default db 0");
                 }
             }
 
@@ -97,7 +97,7 @@ namespace NLog.Targets.Redis
                     redisDatabase.Publish(key, message);
                     break;
                 default:
-                    throw new Exception("No DataType defined for RedisTarget");
+                    throw new Exception($"The required {nameof(DataType)} property was not defined or is invalid. Consider specifying either {nameof(RedisDataType.List)} or {nameof(RedisDataType.Channel)}");
             }
         }
     }
