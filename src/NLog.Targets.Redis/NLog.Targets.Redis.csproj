@@ -8,7 +8,11 @@
     <Copyright>Copyright 2014-$(CurrentYear)</Copyright>
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
 
+    <!--Version is patched by CI-->
     <Version>2.0.0</Version>
+    <!--AssemblyVersion only changes are major releases.-->
+    <AssemblyVersion>2.0.0</AssemblyVersion>
+
     <PackageReleaseNotes>NLog.Redis is now NLog.Targets.Redis</PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
