@@ -15,10 +15,9 @@
     <PackageLicenseUrl>https://raw.githubusercontent.com/NLog/NLog.Redis/master/LICENSE</PackageLicenseUrl>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git@github.com:NLog/NLog.Redis.git</RepositoryUrl>
-
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../NLog.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
