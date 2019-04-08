@@ -4,6 +4,8 @@
 NLog.Targets.Redis
 ==========
 
+This packages is an extension to [NLog](https://github.com/NLog/NLog/). 
+
 This project provides a custom target for the NLog framework to allow a user to send log messages to a Redis server. The target supports sending log messages to a Redis list or to a pub/sub channel. 
 
 ## Installation
