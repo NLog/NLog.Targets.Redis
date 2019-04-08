@@ -1,4 +1,5 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/ounar0m1gdidqram/branch/master?svg=true)](https://ci.appveyor.com/project/nlog/nlog-redis/branch/master)
+[![NuGet Pre Release](https://img.shields.io/nuget/vpre/NLog.Targets.Redis.svg)](https://www.nuget.org/packages/NLog.Targets.Redis)
 
 
 NLog.Targets.Redis
