@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.5</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0</TargetFrameworks>
     <Title>NLog Target for Redis</Title>
     <Description>NLog Target for Redis supporting .Net Framework and .Net Standard</Description>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -30,12 +30,16 @@
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
     <PackageReference Include="NLog" Version="4.0.0" />
-    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.0.488" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
     <PackageReference Include="NLog" Version="4.5.0" />
     <PackageReference Include="StackExchange.Redis.StrongName" Version="1.1.605" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.7.4" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
   </ItemGroup>
 
 </Project>
