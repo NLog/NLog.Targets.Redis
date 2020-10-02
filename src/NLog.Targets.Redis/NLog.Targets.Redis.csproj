@@ -28,18 +28,9 @@
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="NLog" Version="4.0.0" />
-  </ItemGroup>
-
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
-    <PackageReference Include="NLog" Version="4.5.0" />
-    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.1.605" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.7.4" />
-    <PackageReference Include="StackExchange.Redis" Version="2.1.58" />
+    <PackageReference Include="StackExchange.Redis" Version="2.1.28" />
   </ItemGroup>
 
 </Project>
