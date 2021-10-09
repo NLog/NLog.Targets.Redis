@@ -15,7 +15,7 @@ namespace NLog.Targets.Redis.Tests
             var port = 1234;
             var db = 0;
 
-            var connectionManager = new MockRedisConnectionManager(host, port, db, null);
+            var connectionManager = new MockRedisConnectionManager(host, port, db);
 
             //Act
             connectionManager.InitializeConnection();
@@ -37,7 +37,7 @@ namespace NLog.Targets.Redis.Tests
             var db = 0;
             var password = "ABCDEFG";
 
-            var connectionManager = new MockRedisConnectionManager(host, port, db, password);
+            var connectionManager = new MockRedisConnectionManager(host, port, db, password: password);
 
             //Act
             connectionManager.InitializeConnection();
@@ -56,7 +56,7 @@ namespace NLog.Targets.Redis.Tests
             var db = 0;
             var password = "";
 
-            var connectionManager = new MockRedisConnectionManager(host, port, db, password);
+            var connectionManager = new MockRedisConnectionManager(host, port, db, password: password);
 
             //Act
             connectionManager.InitializeConnection();
@@ -75,7 +75,7 @@ namespace NLog.Targets.Redis.Tests
 
             var multiplexer = Substitute.For<IConnectionMultiplexer>();
 
-            var connectionManager = new MockRedisConnectionManager(host, port, db, null, multiplexer);
+            var connectionManager = new MockRedisConnectionManager(multiplexer, host, port, db);
 
             //Act
             connectionManager.InitializeConnection();
@@ -94,7 +94,7 @@ namespace NLog.Targets.Redis.Tests
 
             var multiplexer = Substitute.For<IConnectionMultiplexer>();
 
-            var connectionManager = new MockRedisConnectionManager(host, port, db, null, multiplexer);
+            var connectionManager = new MockRedisConnectionManager(multiplexer, host, port, db);
 
             //Act
             Exception ex = Assert.Throws<Exception>(() => connectionManager.GetDatabase());

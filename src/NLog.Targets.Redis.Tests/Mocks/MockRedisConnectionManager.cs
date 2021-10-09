@@ -5,22 +5,20 @@ namespace NLog.Targets.Redis.Tests.Mocks
     internal class MockRedisConnectionManager : RedisConnectionManager
     {
         private readonly IConnectionMultiplexer _multiplexer;
-        public ConfigurationOptions ConfigurationOptions;
 
-        public MockRedisConnectionManager(string host, int port, int db, string password,
-            IConnectionMultiplexer multiplexer) : base(host, port, db, password)
+        public MockRedisConnectionManager(IConnectionMultiplexer multiplexer, string host, int port, int db, string password = null, string clientName = null, string configurationOptions = null)
+            : base(host, port, db, password, clientName, configurationOptions)
         {
             _multiplexer = multiplexer;
         }
 
-        public MockRedisConnectionManager(string host, int port, int db, string password)
-            : base(host, port, db, password)
+        public MockRedisConnectionManager(string host, int port, int db, string password = null, string clientName = null, string configurationOptions = null)
+            : base(host, port, db, password, clientName, configurationOptions)
         {
         }
 
-        protected override IConnectionMultiplexer CreateConnectionMultiplexer(ConfigurationOptions connectionOptions)
+        protected override IConnectionMultiplexer CreateConnectionMultiplexer()
         {
-            ConfigurationOptions = connectionOptions;
             return _multiplexer;
         }
     }

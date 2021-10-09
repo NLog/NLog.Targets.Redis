@@ -23,7 +23,8 @@ The `<target />` configuration section contains five required fields and one opt
 - dataType (optional): The Redis data type that should be used to store the log messages. This can be either `list` or `channel`, defaults to `list`.
 - layout (required): The layout that defines the format of the message to be sent to the Redis target.
 - db (optional): The Redis database id to store the log messages in, if the Redis database type `list` is chosen.
-
+- clientName (optional): The Client name to use for all Redis connections.
+- configurationOptions (optional): Additional configuration options (comma delimited). See [Configuration Options](https://stackexchange.github.io/StackExchange.Redis/Configuration.html)
 
 ## Config File
 
@@ -43,8 +44,6 @@ The `<target />` configuration section contains five required fields and one opt
 </nlog>
 ```
  
-
-
 ## Notes
 
 This is a fork of https://github.com/richclement/NLog.Redis

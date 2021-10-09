@@ -6,6 +6,8 @@ namespace NLog.Targets.Redis.Tests.Mocks
     {
         private readonly IConnectionMultiplexer _connectionMultiplexer;
 
+        public ConfigurationOptions RedisConfiguration { get; private set; }
+
         public MockRedisTarget()
         {
         }
@@ -15,9 +17,11 @@ namespace NLog.Targets.Redis.Tests.Mocks
             _connectionMultiplexer = connectionMultiplexer;
         }
 
-        internal override RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password)
+        internal override RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password, string clientName, string configurationOptions)
         {
-            return new MockRedisConnectionManager(host, port, db, password, _connectionMultiplexer);
+            var connectionManager = new MockRedisConnectionManager(_connectionMultiplexer, host, port, db, password, clientName, configurationOptions);
+            RedisConfiguration = connectionManager.ConfigurationOptions;
+            return connectionManager;
         }
     }
 }
