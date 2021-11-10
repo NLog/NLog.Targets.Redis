@@ -6,43 +6,39 @@ namespace NLog.Targets.Redis
     internal class RedisConnectionManager : IDisposable
     {
         private IConnectionMultiplexer _connectionMultiplexer;
-
-        private readonly string _host;
-        private readonly int _port;
         private readonly int _db;
-        private readonly string _password;
 
-        public RedisConnectionManager(string host, int port, int db, string password)
+        public ConfigurationOptions ConfigurationOptions { get; }
+
+        public RedisConnectionManager(string host, int port, int db, string password, string clientName = null, string configurationOptions = null)
         {
-            _host = host;
-            _port = port;
             _db = db;
-            _password = password;
+
+            var connectionOptions = string.IsNullOrEmpty(configurationOptions) ? new ConfigurationOptions() : ConfigurationOptions.Parse(configurationOptions);
+            connectionOptions.AbortOnConnectFail = false;
+            connectionOptions.KeepAlive = 5;
+            connectionOptions.EndPoints.Add(host, port);
+
+            if (!string.IsNullOrEmpty(password))
+            {
+                connectionOptions.Password = password;
+            }
+            if (!string.IsNullOrEmpty(clientName))
+            {
+                connectionOptions.ClientName = clientName;
+            }
+
+            ConfigurationOptions = connectionOptions;
         }
 
         public void InitializeConnection()
         {
-            var connectionOptions = new ConfigurationOptions
-            {
-                AbortOnConnectFail = false,
-                SyncTimeout = 3000,
-                ConnectTimeout = 3000,
-                ConnectRetry = 3,
-                KeepAlive = 5
-            };
-            connectionOptions.EndPoints.Add(_host, _port);
-
-            if (!string.IsNullOrEmpty(_password))
-            {
-                connectionOptions.Password = _password;
-            }
-
-            _connectionMultiplexer = CreateConnectionMultiplexer(connectionOptions);
+            _connectionMultiplexer = CreateConnectionMultiplexer();
         }
 
-        protected virtual IConnectionMultiplexer CreateConnectionMultiplexer(ConfigurationOptions connectionOptions)
+        protected virtual IConnectionMultiplexer CreateConnectionMultiplexer()
         {
-            return ConnectionMultiplexer.Connect(connectionOptions);
+            return ConnectionMultiplexer.Connect(ConfigurationOptions);
         }
 
         public IDatabase GetDatabase()
@@ -58,14 +54,11 @@ namespace NLog.Targets.Redis
             GC.SuppressFinalize(this);
         }
 
-        protected void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing)
         {
             if (disposing)
             {
-                if (_connectionMultiplexer != null)
-                {
-                    _connectionMultiplexer.Dispose();
-                }
+                _connectionMultiplexer?.Dispose();
             }
         }
     }

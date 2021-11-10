@@ -12,12 +12,14 @@ namespace NLog.Targets.Redis.Tests
         protected const string RedisHost = "localhost";
         protected const string RedisPort = "6379";
 
-
         [Fact]
         public void RedisTarget_should_configure_with_list_DataType()
         {
             var mock = new MockRedisTarget();
             NLogRedisConfiguration(mock, RedisDataType.List);
+            Assert.Equal(RedisDataType.List, mock.DataType);
+            Assert.Equal(nameof(RedisTargetTests), mock.RedisConfiguration.ClientName);
+            Assert.Single(mock.RedisConfiguration.EndPoints);
         }
 
         [Fact]
@@ -33,6 +35,7 @@ namespace NLog.Targets.Redis.Tests
         {
             var mock = new MockRedisTarget();
             NLogRedisConfiguration(mock, RedisDataType.Channel);
+            Assert.Equal(RedisDataType.Channel, mock.DataType);
         }
 
         [Fact]
@@ -98,6 +101,7 @@ namespace NLog.Targets.Redis.Tests
             {
                 redisTarget.DataType = dataType.Value;
             }
+            redisTarget.ClientName = nameof(RedisTargetTests);
 
             // setup rules
             var rule1 = new LoggingRule("*", LogLevel.Info, redisTarget);

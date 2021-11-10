@@ -43,11 +43,41 @@ namespace NLog.Targets.Redis
         /// </summary>
         public Layout Password { get; set; }
 
+        /// <summary>
+        /// The client name to use for all connections
+        /// </summary>
+        public Layout ClientName { get; set; }
+
+        /// <summary>
+        /// Additional ConfigurationOptions in Comma-delimeted-Format. See also <see cref="StackExchange.Redis.ConfigurationOptions.Parse(string)"/>
+        /// </summary>
+        /// <remarks>
+        /// See <a href="https://stackexchange.github.io/StackExchange.Redis/Configuration.html">Configuration Options</a>
+        /// </remarks>
+        public Layout ConfigurationOptions { get; set; }
+
         private RedisConnectionManager _redisConnectionManager;
 
-        internal virtual RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password)
+        internal virtual RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password, string clientName, string configurationOptions)
         {
-            return new RedisConnectionManager(host, port, db, password);
+            return new RedisConnectionManager(host, port, db, password, clientName, configurationOptions);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NLog.Targets.RedisTarget" /> class.
+        /// </summary>
+        public RedisTarget()
+        {
+            OptimizeBufferReuse = true;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NLog.Targets.RedisTarget" /> class.
+        /// </summary>
+        public RedisTarget(string name)
+            :base()
+        {
+            Name = name;
         }
 
         protected override void InitializeTarget()
@@ -58,8 +88,9 @@ namespace NLog.Targets.Redis
             var renderedPort = Port.Render(LogEventInfo.CreateNullEvent());
             if (!int.TryParse(renderedPort, out var port))
             {
-                throw new Exception($"Unable to parse Port:{renderedPort}");
+                throw new NLogConfigurationException($"Unable to parse Port:{renderedPort}");
             }
+
             var db = 0;
             if (Db != null)
             {
@@ -70,7 +101,10 @@ namespace NLog.Targets.Redis
                 }
             }
 
-            _redisConnectionManager = CreateConnectionManager(host, port, db, password);
+            var clientName = ClientName?.Render(LogEventInfo.CreateNullEvent()) ?? string.Empty;
+            var configurationOptions = ConfigurationOptions?.Render(LogEventInfo.CreateNullEvent()) ?? string.Empty;
+
+            _redisConnectionManager = CreateConnectionManager(host, port, db, password, clientName, configurationOptions);
             _redisConnectionManager.InitializeConnection();
 
             base.InitializeTarget();
@@ -85,7 +119,8 @@ namespace NLog.Targets.Redis
 
         protected override void Write(LogEventInfo logEvent)
         {
-            var message = Layout.Render(logEvent);
+            var message = RenderLogEvent(Layout, logEvent);
+            
             var key = Key?.Render(logEvent);
             var redisDatabase = _redisConnectionManager.GetDatabase();
             switch (DataType)

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard1.5</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
     <Title>NLog Target for Redis</Title>
     <Description>NLog Target for Redis supporting .Net Framework and .Net Standard</Description>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -9,33 +9,38 @@
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
 
     <!--Version is patched by CI-->
-    <Version>2.0.0</Version>
+    <Version>3.0.0</Version>
     <!--AssemblyVersion only changes are major releases.-->
-    <AssemblyVersion>2.0.0</AssemblyVersion>
+    <AssemblyVersion>3.0.0</AssemblyVersion>
 
-    <PackageReleaseNotes>NLog.Redis is now NLog.Targets.Redis</PackageReleaseNotes>
+    <PackageReleaseNotes>
+- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis ver. 2.2.4
+- Added Net5.0 platform support
+- Added support for specifying ClientName
+- Added support for specifying additional ConfigurationOptions (comma-delimited format)
+    </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
-    <PackageLicenseUrl>https://raw.githubusercontent.com/NLog/NLog.Redis/master/LICENSE</PackageLicenseUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>git@github.com:NLog/NLog.Redis.git</RepositoryUrl>
-  </PropertyGroup>
 
-  <PropertyGroup>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../NLog.snk</AssemblyOriginatorKeyFile>
     <DelaySign>false</DelaySign>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
+
+    <DisableImplicitFrameworkReferences Condition=" '$(TargetFramework)' == 'net461' ">true</DisableImplicitFrameworkReferences>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'net45' ">
-    <PackageReference Include="NLog" Version="4.0.0" />
-    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.0.488" />
+  <ItemGroup>
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
   </ItemGroup>
 
-  <ItemGroup Condition=" '$(TargetFramework)' == 'netstandard1.5' ">
-    <PackageReference Include="NLog" Version="4.5.0" />
-    <PackageReference Include="StackExchange.Redis.StrongName" Version="1.1.605" />
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
   </ItemGroup>
 
 </Project>
