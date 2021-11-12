@@ -18,7 +18,7 @@
 - Added NET 5 platform support (@snakefoot)
 - Added support for specifying ClientName (@snakefoot)
 - Added support for specifying additional ConfigurationOptions (comma-delimited format) (@snakefoot)
-- Enabled Sourcelink (@304NotModified)
+- Enabled SourceLink (@304NotModified)
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
