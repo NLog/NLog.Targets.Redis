@@ -14,11 +14,11 @@
     <AssemblyVersion>3.0.0</AssemblyVersion>
 
     <PackageReleaseNotes>
-- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis
-- Added NET 5 platform support
-- Added support for specifying ClientName
-- Added support for specifying additional ConfigurationOptions (comma-delimited format)
-- Enabled Sourcelink
+- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis (@joshua5822, @snakefoot)
+- Added NET 5 platform support (@snakefoot)
+- Added support for specifying ClientName (@snakefoot)
+- Added support for specifying additional ConfigurationOptions (comma-delimited format) (@snakefoot)
+- Enabled Sourcelink (@304NotModified)
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
