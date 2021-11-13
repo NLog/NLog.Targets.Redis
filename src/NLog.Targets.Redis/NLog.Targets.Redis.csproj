@@ -24,7 +24,7 @@
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git@github.com:NLog/NLog.Redis.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/NLog/NLog.Targets.Redis.git</RepositoryUrl>
 
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../NLog.snk</AssemblyOriginatorKeyFile>
