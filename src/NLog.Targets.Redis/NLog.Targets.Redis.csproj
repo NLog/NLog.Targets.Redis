@@ -14,16 +14,17 @@
     <AssemblyVersion>3.0.0</AssemblyVersion>
 
     <PackageReleaseNotes>
-- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis ver. 2.2.4
-- Added Net5.0 platform support
-- Added support for specifying ClientName
-- Added support for specifying additional ConfigurationOptions (comma-delimited format)
+- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis (@joshua5822, @snakefoot)
+- Added NET 5 platform support (@snakefoot)
+- Added support for specifying ClientName (@snakefoot)
+- Added support for specifying additional ConfigurationOptions (comma-delimited format) (@snakefoot)
+- Enabled SourceLink (@304NotModified)
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git@github.com:NLog/NLog.Redis.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/NLog/NLog.Targets.Redis.git</RepositoryUrl>
 
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>../NLog.snk</AssemblyOriginatorKeyFile>
@@ -37,6 +38,7 @@
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.5.11" />
     <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
