@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
     <Title>NLog Target for Redis</Title>
-    <Description>NLog Target for Redis supporting .Net Framework and .Net Standard</Description>
+    <Description>NLog Target for Redis supporting .NET, .NET Standard and .NET Framework</Description>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
     <Copyright>Copyright 2014-$(CurrentYear)</Copyright>
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
@@ -19,6 +19,7 @@
 - Added support for specifying ClientName (@snakefoot)
 - Added support for specifying additional ConfigurationOptions (comma-delimited format) (@snakefoot)
 - Enabled SourceLink (@304NotModified)
+- Enabled deterministic build (@304NotModified)
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
