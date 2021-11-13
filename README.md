@@ -47,3 +47,10 @@ The `<target />` configuration section contains five required fields and one opt
 ## Notes
 
 This is a fork of https://github.com/richclement/NLog.Redis
+
+
+## Admin
+
+### How to release
+1. Create a new release with a new tag
+2. Wait for the build 

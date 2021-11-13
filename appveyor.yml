@@ -19,7 +19,7 @@ init:
         Update-AppveyorBuild -Version "$tag"
     }
 build_script:
-- ps: msbuild /t:restore,pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:PublishRepositoryUrl=true /verbosity:minimal
+- ps: msbuild .\src /t:restore,pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:PublishRepositoryUrl=true /verbosity:minimal
 test_script:
 - ps: dotnet test .\src\NLog.Targets.Redis.Tests\
 
@@ -28,6 +28,7 @@ nuget:
 
 artifacts:
   - path: 'src\**\*.nupkg'
+  - path: 'src\**\*.snupkg'
 
 deploy:
 - provider: NuGet
