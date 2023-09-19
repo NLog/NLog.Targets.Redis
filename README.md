@@ -21,7 +21,7 @@ The `<target />` configuration section contains five required fields and one opt
 - port (required): The port the Redis server is listening on, defaults to `6379`.
 - key (required): The key that should be used to identify the Redis list or the pub/sub channel to which the log messages are being delivered.
 - dataType (optional): The Redis data type that should be used to store the log messages. This can be either `list` or `channel`, defaults to `list`.
-- channelPattern (optional): The Redis Channel Pattern to use when dataType = `channel`. This can be either 'literal' or 'pattern', defaults to 'auto'. 
+- channelPattern (optional): The Redis Channel Pattern to use when dataType = `channel`. This can be either `literal` or `pattern`, defaults to `auto`. 
 - layout (required): The layout that defines the format of the message to be sent to the Redis target.
 - db (optional): The Redis database id to store the log messages in, if the Redis database type `list` is chosen.
 - clientName (optional): The Client name to use for all Redis connections.
