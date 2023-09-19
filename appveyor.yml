@@ -2,6 +2,11 @@ version: 3.1.0.{build}
 image: Visual Studio 2022
 configuration: Release
 platform: Any CPU
+dotnet_csproj:
+  patch: true
+  file: '**\*.csproj'
+  file_version: '{version}'
+  informational_version: '{version}'
 build_script:
 - ps: msbuild .\src /t:restore,pack /p:Configuration=Release /p:IncludeSymbols=true /p:SymbolPackageFormat=snupkg /p:ContinuousIntegrationBuild=true /p:EmbedUntrackedSources=true /p:PublishRepositoryUrl=true /verbosity:minimal
 test_script:
