@@ -10,6 +10,8 @@ namespace NLog.Targets.Redis
 
         public ConfigurationOptions ConfigurationOptions { get; }
 
+        private Tuple<string, RedisChannel> _prevChannel;
+
         public RedisConnectionManager(string host, int port, int db, string password, string clientName = null, string configurationOptions = null)
         {
             _db = db;
@@ -41,7 +43,41 @@ namespace NLog.Targets.Redis
             return ConnectionMultiplexer.Connect(ConfigurationOptions);
         }
 
-        public IDatabase GetDatabase()
+        public void PushList(string key, string message)
+        {
+            GetDatabase().ListRightPush(key, message);
+        }
+
+        public void PushChannel(RedisChannelPattern pattern, string key, string message)
+        {
+            GetDatabase().Publish(ResolveChannel(pattern, key ?? string.Empty), message);
+        }
+
+        private RedisChannel ResolveChannel(RedisChannelPattern pattern, string key)
+        {
+            var redisChannel = _prevChannel;
+            if (redisChannel is null || !string.Equals(redisChannel.Item1, key))
+            {
+                redisChannel = new Tuple<string, RedisChannel>(key, CreateChannel(pattern, key));
+                _prevChannel = redisChannel;
+            }
+            return redisChannel.Item2;
+        }
+
+        private RedisChannel CreateChannel(RedisChannelPattern pattern, string key)
+        {
+            switch (pattern)
+            {
+                case RedisChannelPattern.Literal:
+                    return new RedisChannel(key, RedisChannel.PatternMode.Literal);
+                case RedisChannelPattern.Pattern:
+                    return new RedisChannel(key, RedisChannel.PatternMode.Pattern);
+                default:
+                    return new RedisChannel(key, RedisChannel.PatternMode.Auto);
+            }
+        }
+
+        private IDatabase GetDatabase()
         {
             if (_connectionMultiplexer == null) throw new Exception("connection manager not initialized");
 

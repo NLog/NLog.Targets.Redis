@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using StackExchange.Redis;
 using Xunit;
 
 namespace NLog.Targets.Redis.Tests.IntegrationTests
@@ -42,7 +43,7 @@ namespace NLog.Targets.Redis.Tests.IntegrationTests
             using (var redisConnection = GetRedisConnection())
             {
                 var subscriber = redisConnection.GetSubscriber();
-                subscriber.Subscribe(RedisKey, ListenForMessage);
+                subscriber.Subscribe(new RedisChannel(RedisKey, RedisChannel.PatternMode.Auto), ListenForMessage);
 
                 var logger = LogManager.GetLogger("redis");
                 logger.Info("test pub/sub message");

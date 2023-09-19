@@ -65,42 +65,5 @@ namespace NLog.Targets.Redis.Tests
             var assertPassword = connectionManager.ConfigurationOptions.Password;
             Assert.Null(assertPassword);
         }
-
-        [Fact]
-        public void GetDatabase_should_use_correct_database()
-        {
-            var host = "abcde";
-            var port = 1234;
-            var db = 1;
-
-            var multiplexer = Substitute.For<IConnectionMultiplexer>();
-
-            var connectionManager = new MockRedisConnectionManager(multiplexer, host, port, db);
-
-            //Act
-            connectionManager.InitializeConnection();
-            connectionManager.GetDatabase();
-
-            //Assert
-            multiplexer.Received().GetDatabase(Arg.Is(db));
-        }
-
-        [Fact]
-        public void GetDatabase_should_throw_if_connection_multiplexer_null()
-        {
-            var host = "abcde";
-            var port = 1234;
-            var db = 1;
-
-            var multiplexer = Substitute.For<IConnectionMultiplexer>();
-
-            var connectionManager = new MockRedisConnectionManager(multiplexer, host, port, db);
-
-            //Act
-            Exception ex = Assert.Throws<Exception>(() => connectionManager.GetDatabase());
-
-            //Assert
-            Assert.Equal("connection manager not initialized", ex.Message);
-        }
     }
 }
