@@ -65,7 +65,7 @@ namespace NLog.Targets.Redis.Tests
             var logger = LogManager.GetLogger("redis");
             logger.Info("test pub/sub message");
 
-            database.Received().Publish(RedisKey, "INFO test pub/sub message");
+            database.Received().Publish(new RedisChannel(RedisKey, RedisChannel.PatternMode.Auto), "INFO test pub/sub message");
         }
 
         [Fact]

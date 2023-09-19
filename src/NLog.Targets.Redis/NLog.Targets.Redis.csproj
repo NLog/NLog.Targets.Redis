@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0;net5.0</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0;net6.0</TargetFrameworks>
     <Title>NLog Target for Redis</Title>
     <Description>NLog Target for Redis supporting .NET, .NET Standard and .NET Framework</Description>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
@@ -9,17 +9,15 @@
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
 
     <!--Version is patched by CI-->
-    <Version>3.0.0</Version>
+    <Version>3.1.0</Version>
     <!--AssemblyVersion only changes are major releases.-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
 
     <PackageReleaseNotes>
-- Changed from deprecated StackExchange.Redis.StrongName to StackExchange.Redis (@joshua5822, @snakefoot)
-- Added NET 5 platform support (@snakefoot)
-- Added support for specifying ClientName (@snakefoot)
-- Added support for specifying additional ConfigurationOptions (comma-delimited format) (@snakefoot)
-- Enabled SourceLink (@304NotModified)
-- Enabled deterministic build (@304NotModified)
+- Introduced new RedisTarget option ChannelPattern (Auto, Literal, Pattern)
+- Replaced obsolete NET5 with NET6
+- Updated to StackExchange.Redis v2.6.122
+- Updated to NLog v4.7.15
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
@@ -37,9 +35,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.5.11" />
-    <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+    <PackageReference Include="NLog" Version="4.7.15" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">

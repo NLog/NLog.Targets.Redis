@@ -19,19 +19,25 @@ namespace NLog.Targets.Redis
         /// Sets the port number redis is running on
         /// </summary>
         [RequiredParameter]
-        public Layout Port { get; set; }
+        public Layout Port { get; set; } = "6379";
 
         /// <summary>
         /// Sets the key to be used for either the list or the pub/sub channel in redis
         /// </summary>
         [RequiredParameter]
-        public Layout Key { get; set; }
+        public Layout Key { get; set; } 
 
         /// <summary>
         /// Sets what redis data type to use, either "list" or "channel", defaults to "list"
         /// </summary>
         [DefaultValue(RedisDataType.List)]
         public RedisDataType DataType { get; set; } = RedisDataType.List;
+
+        /// <summary>
+        /// When using <see cref="DataType"/> = "channel", then control how to resolve channel from <see cref="Key"/>, either "literal" or "pattern", defaults to "auto"
+        /// </summary>
+        [DefaultValue(RedisChannelPattern.Auto)]
+        public RedisChannelPattern ChannelPattern { get; set; } = RedisChannelPattern.Auto;
 
         /// <summary>
         /// Sets the database id to be used in redis if the log entries are sent to a list. Defaults to 0
@@ -121,15 +127,15 @@ namespace NLog.Targets.Redis
         {
             var message = RenderLogEvent(Layout, logEvent);
             
-            var key = Key?.Render(logEvent);
-            var redisDatabase = _redisConnectionManager.GetDatabase();
+            var key = RenderLogEvent(Key, logEvent);
+
             switch (DataType)
             {
                 case RedisDataType.List:
-                    redisDatabase.ListRightPush(key, message);
+                    _redisConnectionManager.PushList(key, message);
                     break;
                 case RedisDataType.Channel:
-                    redisDatabase.Publish(key, message);
+                    _redisConnectionManager.PushChannel(ChannelPattern, key, message);
                     break;
                 default:
                     throw new Exception($"The required {nameof(DataType)} property was not defined or is invalid. Consider specifying either {nameof(RedisDataType.List)} or {nameof(RedisDataType.Channel)}");
