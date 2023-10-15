@@ -18,6 +18,8 @@
 - Replaced obsolete NET5 with NET6
 - Updated to StackExchange.Redis v2.6.122
 - Updated to NLog v4.7.15
+
+See https://github.com/NLog/NLog.Targets.Redis for documentation of NLog target for Redis.
     </PackageReleaseNotes>
     <PackageTags>NLog;Redis;Log;Logging</PackageTags>
     <PackageProjectUrl>https://github.com/NLog/NLog.Redis</PackageProjectUrl>
