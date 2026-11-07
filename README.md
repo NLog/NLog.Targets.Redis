@@ -1,4 +1,4 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/ounar0m1gdidqram/branch/master?svg=true)](https://ci.appveyor.com/project/nlog/nlog-redis/branch/master)
+[![Build status](https://github.com/NLog/NLog.Targets.Redis/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/NLog/NLog.Targets.Redis/actions/workflows/ci.yml)
 [![NuGet](https://img.shields.io/nuget/vpre/NLog.Targets.Redis.svg)](https://www.nuget.org/packages/NLog.Targets.Redis)
 
 

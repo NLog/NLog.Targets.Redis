@@ -8,8 +8,7 @@
     <Copyright>Copyright 2014-$(CurrentYear)</Copyright>
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
 
-    <!--Version is patched by CI-->
-    <Version>3.1.0</Version>
+    <VersionPrefix>3.1.0</VersionPrefix>
     <!--AssemblyVersion only changes are major releases.-->
     <AssemblyVersion>3.0.0</AssemblyVersion>
 
@@ -39,7 +38,6 @@ See https://github.com/NLog/NLog.Targets.Redis for documentation of NLog target 
   <ItemGroup>
     <PackageReference Include="NLog" Version="4.7.15" />
     <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
