@@ -28,7 +28,7 @@ jobs:
             upload_coverage: false
           - os: ubuntu-latest
             name: Build & test (Ubuntu)
-            framework_args: --framework net6.0
+            framework_args: --framework net10.0
             coverage_args: --collect:"XPlat Code Coverage"
             upload_coverage: true
     runs-on: ${{ matrix.os }}
@@ -38,19 +38,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      - name: Set up .NET 6 runtime
-        uses: actions/setup-dotnet@v5
-        with:
-          dotnet-version: 6.0.x
-
       - name: Restore
         run: dotnet restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore ${{ matrix.framework_args }}
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --no-build ${{ matrix.framework_args }} ${{ matrix.coverage_args }} --logger GitHubActions
+        run: dotnet test src/NLog.Targets.Redis.Tests/NLog.Targets.Redis.Tests.csproj --configuration Release --no-restore --no-build ${{ matrix.framework_args }} ${{ matrix.coverage_args }} --logger GitHubActions
 
       - name: Upload coverage to Codecov
         if: matrix.upload_coverage

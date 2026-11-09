@@ -12,19 +12,16 @@ namespace NLog.Targets.Redis
         /// <summary>
         /// Sets the host name or IP Address of the redis server
         /// </summary>
-        [RequiredParameter]
         public Layout Host { get; set; }
 
         /// <summary>
         /// Sets the port number redis is running on
         /// </summary>
-        [RequiredParameter]
         public Layout Port { get; set; } = "6379";
 
         /// <summary>
         /// Sets the key to be used for either the list or the pub/sub channel in redis
         /// </summary>
-        [RequiredParameter]
         public Layout Key { get; set; } 
 
         /// <summary>
@@ -74,7 +71,6 @@ namespace NLog.Targets.Redis
         /// </summary>
         public RedisTarget()
         {
-            OptimizeBufferReuse = true;
         }
 
         /// <summary>
@@ -88,6 +84,13 @@ namespace NLog.Targets.Redis
 
         protected override void InitializeTarget()
         {
+            if (Host == null)
+                throw new NLogConfigurationException($"The required {nameof(Host)} property was not specified");
+            if (Port == null)
+                throw new NLogConfigurationException($"The required {nameof(Port)} property was not specified");
+            if (Key == null)
+                throw new NLogConfigurationException($"The required {nameof(Key)} property was not specified");
+
             var host = Host?.Render(LogEventInfo.CreateNullEvent());
             var password = Password?.Render(LogEventInfo.CreateNullEvent());
 
