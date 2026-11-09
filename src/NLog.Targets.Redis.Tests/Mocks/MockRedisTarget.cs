@@ -17,6 +17,11 @@ namespace NLog.Targets.Redis.Tests.Mocks
             _connectionMultiplexer = connectionMultiplexer;
         }
 
+        internal void InitializeTargetForTest()
+        {
+            InitializeTarget();
+        }
+
         internal override RedisConnectionManager CreateConnectionManager(string host, int port, int db, string password, string clientName, string configurationOptions)
         {
             var connectionManager = new MockRedisConnectionManager(_connectionMultiplexer, host, port, db, password, clientName, configurationOptions);

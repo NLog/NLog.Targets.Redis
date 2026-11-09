@@ -13,6 +13,59 @@ namespace NLog.Targets.Redis.Tests
         protected const string RedisPort = "6379";
 
         [Fact]
+        public void RedisTarget_should_require_host()
+        {
+            // Arrange
+            var target = new MockRedisTarget
+            {
+                Port = RedisPort,
+                Key = RedisKey
+            };
+
+            // Act
+            var exception = Assert.Throws<NLogConfigurationException>(target.InitializeTargetForTest);
+
+            // Assert
+            Assert.Contains(nameof(RedisTarget.Host), exception.Message);
+        }
+
+        [Fact]
+        public void RedisTarget_should_require_port()
+        {
+            // Arrange
+            var target = new MockRedisTarget
+            {
+                Host = RedisHost,
+                Port = null,
+                Key = RedisKey
+            };
+
+            // Act
+            var exception = Assert.Throws<NLogConfigurationException>(target.InitializeTargetForTest);
+
+            // Assert
+            Assert.Contains(nameof(RedisTarget.Port), exception.Message);
+        }
+
+        [Fact]
+        public void RedisTarget_should_require_key()
+        {
+            // Arrange
+            var target = new MockRedisTarget
+            {
+                Host = RedisHost,
+                Port = RedisPort,
+                Key = null
+            };
+
+            // Act
+            var exception = Assert.Throws<NLogConfigurationException>(target.InitializeTargetForTest);
+
+            // Assert
+            Assert.Contains(nameof(RedisTarget.Key), exception.Message);
+        }
+
+        [Fact]
         public void RedisTarget_should_configure_with_list_DataType()
         {
             var mock = new MockRedisTarget();
