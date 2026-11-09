@@ -42,10 +42,10 @@ jobs:
         run: dotnet restore ${{ env.SOLUTION }}
 
       - name: Build
-        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore ${{ matrix.framework_args }}
+        run: dotnet build ${{ env.SOLUTION }} --configuration Release --no-restore
 
       - name: Test
-        run: dotnet test ${{ env.SOLUTION }} --configuration Release --no-restore --no-build ${{ matrix.framework_args }} ${{ matrix.coverage_args }} --logger GitHubActions
+        run: dotnet test src/NLog.Targets.Redis.Tests/NLog.Targets.Redis.Tests.csproj --configuration Release --no-restore --no-build ${{ matrix.framework_args }} ${{ matrix.coverage_args }} --logger GitHubActions
 
       - name: Upload coverage to Codecov
         if: matrix.upload_coverage
