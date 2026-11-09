@@ -1,22 +1,21 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net461;netstandard2.0;net6.0</TargetFrameworks>
+    <TargetFrameworks>net461;netstandard2.0;net10.0</TargetFrameworks>
     <Title>NLog Target for Redis</Title>
     <Description>NLog Target for Redis supporting .NET, .NET Standard and .NET Framework</Description>
     <CurrentYear>$([System.DateTime]::Now.ToString(yyyy))</CurrentYear>
     <Copyright>Copyright 2014-$(CurrentYear)</Copyright>
     <Authors>Rich Clement,Julian Verdurmen,Morgan Creekmore,Mark Lopez</Authors>
 
-    <VersionPrefix>3.1.0</VersionPrefix>
+    <VersionPrefix>6.2.2</VersionPrefix>
     <!--AssemblyVersion only changes are major releases.-->
-    <AssemblyVersion>3.0.0</AssemblyVersion>
+    <AssemblyVersion>$([System.Version]::Parse('$(VersionPrefix)').Major).0.0.0</AssemblyVersion>
+    <FileVersion>$(VersionPrefix).0</FileVersion>
 
     <PackageReleaseNotes>
-- Introduced new RedisTarget option ChannelPattern (Auto, Literal, Pattern)
-- Replaced obsolete NET5 with NET6
-- Updated to StackExchange.Redis v2.6.122
-- Updated to NLog v4.7.15
+  - Updated to NLog v6.2.2
+  - Updated to StackExchange.Redis v3.1.0
 
 See https://github.com/NLog/NLog.Targets.Redis for documentation of NLog target for Redis.
     </PackageReleaseNotes>
@@ -36,8 +35,8 @@ See https://github.com/NLog/NLog.Targets.Redis for documentation of NLog target 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="NLog" Version="4.7.15" />
-    <PackageReference Include="StackExchange.Redis" Version="2.6.122" />
+    <PackageReference Include="NLog" Version="6.2.2" />
+    <PackageReference Include="StackExchange.Redis" Version="3.1.0" />
   </ItemGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
